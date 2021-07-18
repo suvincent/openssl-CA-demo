@@ -57,7 +57,7 @@ function About(props) {
     }
 
     async function genCert(){
-        if(!days || !DNS || !CN){
+        if(!Days  || !DNS || !CN){
             alert("please enter days and DNS and CN")
             return
         }
