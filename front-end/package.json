@@ -1,0 +1,26 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fidm/x509": "^1.2.1",
+    "bootstrap": "^5.0.2",
+    "fs": "0.0.1-security",
+    "next": "^11.0.1",
+    "openssl-nodejs": "^1.0.5",
+    "openssl-nodejs-promise": "0.0.4",
+    "react": "^17.0.2",
+    "react-bootstrap": "^1.6.1",
+    "react-dom": "^17.0.2",
+    "styled-components": "^5.3.0"
+  }
+}
