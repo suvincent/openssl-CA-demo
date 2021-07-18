@@ -11,19 +11,30 @@ function Bbout(props) {
     const [DNS,setDNS] = useState("");
 
     async function ViewCert(){
+      if(!DNS){
+        alert("please enter DNS")
+        return
+      }
         var result = await fetch(`http://localhost:4000/viewCrt?path=Cert/openssl-${DNS}.crt`);
         var content = await result.text()
         setContent(content)
     }
 
     async function ViewKey(){
+        if(!keyname){
+          alert("please enter key name")
+          return
+        }
         var result = await fetch(`http://localhost:4000/viewrawfile?path=Gen/openssl-${keyname}.key`);
         var content = await result.text()
         setContent(content)
     }
 
     async function verifyTrustChain(){
-
+      if(!DNS){
+        alert("please enter DNS")
+        return
+      }
         var result = await fetch(`http://localhost:4000/verify?ca_root_path=public/root-CA/cert-for-demo.crt&crt_path=Cert/openssl-${DNS}.crt`);
         var content = await result.text()
         setContent(content)
@@ -67,8 +78,11 @@ function Bbout(props) {
                 <Col xs={3}>
                 <FormControl as="input" value={keyname}  onChange={(e)=>{setkeyname(e.target.value)}}/>
                 </Col>
-                <Col>
+                <Col xs={2}>
                 <Button variant="secondary" onClick={ViewKey}>View Key</Button>{' '}
+                </Col>
+                <Col>
+                <Button variant="secondary" onClick={async ()=>{await navigator.clipboard.writeText(Content)}}>Copy textarea to clipboard</Button>{' '}
                 </Col>
                 </Row>
                 <Row>

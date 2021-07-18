@@ -3,7 +3,10 @@ import Image from 'next/image'
 import {Form,Container,Row,Col, Navbar,Nav,Button, FormControl} from 'react-bootstrap'
 // import styled from 'styled-components'
 import ReactLogo from './logo.svg';
-import { useState } from 'react';
+import { useState} from 'react';
+
+  
+  
 
 function About(props) {
     const [PrivateKey,setSK] = useState("");
@@ -16,6 +19,10 @@ function About(props) {
 
 
     async function gensK(){
+        if(!keyname){
+            alert("please enter key name")
+            return
+        }
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -31,6 +38,10 @@ function About(props) {
     }
 
     async function genCSR(){
+        if(!keyname || !DNS || !CN){
+            alert("please enter key name and DNS and CN")
+            return
+        }
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -46,6 +57,10 @@ function About(props) {
     }
 
     async function genCert(){
+        if(!days || !DNS || !CN){
+            alert("please enter days and DNS and CN")
+            return
+        }
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -97,7 +112,9 @@ function About(props) {
                 <Col xs={3}>
                 <FormControl as="input" value={keyname}  onChange={(e)=>{setkeyname(e.target.value)}}/>
                 </Col>
-                <Button variant="secondary" onClick={gensK}>Gen</Button>{' '}
+                <Button variant="secondary" onClick={gensK}>Gen</Button>
+                &nbsp;
+                <Button variant="secondary" onClick={async ()=>{await navigator.clipboard.writeText(PrivateKey)}}>Copy</Button>{' '}
                 </Row>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
@@ -125,7 +142,9 @@ function About(props) {
                     
                 <Col>
                 <br />
-                <Button variant="secondary" onClick={genCSR}>Gen</Button>{' '}
+                <Button variant="secondary" onClick={genCSR}>Gen</Button>
+                &nbsp;
+                <Button variant="secondary" onClick={async ()=>{await navigator.clipboard.writeText(CSR)}}>Copy</Button>{' '}
                 </Col>
                 </Row>
             </Form.Group>
@@ -142,7 +161,9 @@ function About(props) {
                 <Col xs={3}>
                 <FormControl as="input" type="number" value={Days}  onChange={(e)=>{setDays(e.target.value)}}/>
                 </Col>
-                <Button variant="secondary" onClick={genCert}>Sign</Button>{' '}
+                <Button variant="secondary" onClick={genCert}>Sign</Button>
+                &nbsp;
+                <Button variant="secondary" onClick={async ()=>{await navigator.clipboard.writeText(Cert)}}>Copy</Button>{' '}
                 </Row>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
