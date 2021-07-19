@@ -42,7 +42,7 @@ function HomePage(props) {
                 <Form.Control as="textarea" rows={1} value={"360f65e267ee40dbf41ebe0eeb294eab27502c4436f1303877af42bfcdf2516c"} readOnly />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                <Form.Label>Root CA certificate</Form.Label>
+                <Form.Label>Root CA certificate</Form.Label> <a href="http://localhost:4000/downloadCaCert">download raw certificate</a>
                 <Form.Control as="textarea" rows={18} value={props.rootCAcrt} readOnly />
             </Form.Group>
             </Form>
@@ -55,7 +55,7 @@ function HomePage(props) {
 
   export async function getStaticProps(context){
     
-    var result = await fetch('http://localhost:4000/viewCrt?path=cert-for-demo.crt');
+    var result = await fetch('http://localhost:4000/viewCrt?path=Dongba.crt');
     var rootCrt = await result.text()
     return {props : { rootCAcrt : rootCrt }}
   }

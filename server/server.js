@@ -121,6 +121,12 @@ app.get('/checkDNS', async(req, res) => {
     }
   })
 
+app.get('/downloadCaCert', (req, res) => {
+    //http://localhost:4000/downloadCaCert
+    const file = 'Dongba.crt'
+    res.download(file)
+})
+
 app.get('/',(req,res) =>{
     res.send('QAQ');
 })
