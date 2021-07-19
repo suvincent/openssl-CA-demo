@@ -115,9 +115,7 @@ function Bbout(props) {
   
   export async function getStaticProps(context){
     
-    var result = await fetch('http://localhost:4000/viewCrt?path=cert-for-demo.crt');
-    var rootCrt = await result.text()
-    return {props : { rootCAcrt : rootCrt }}
+    return {props : {  }}
   }
 
   export default Bbout
