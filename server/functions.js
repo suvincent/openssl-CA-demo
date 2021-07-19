@@ -1,5 +1,15 @@
 const openssl = require('openssl-nodejs-promise')
 const fs = require('fs')
+const dns2 = require('dns2');
+const options = {
+  // available options
+  // dns: dns server ip address or hostname (string),
+  dns:"1.1.1.1"
+  // port: dns server port (number),
+  // recursive: Recursion Desired flag (boolean, default true, since > v1.4.2)
+};
+const dns = new dns2(options);
+
 
 async function genkey(outputfilename){
     /// test gen key
@@ -115,6 +125,13 @@ function viewrawfile(path){
     
 }
 
+
+async function checkDNS(cname,dnsname) {
+  const result = await dns.resolveCNAME(`${cname}.${dnsname}`);  
+//   console.log(result);
+  return result.answers
+};
+
 module.exports.viewCsr = viewCsr
 module.exports.viewCrt = viewCrt
 module.exports.verify = verify
@@ -122,3 +139,4 @@ module.exports.viewrawfile = viewrawfile
 module.exports.genCert = genCert
 module.exports.genCsr = genCsr
 module.exports.genkey = genkey
+module.exports.checkDNS = checkDNS

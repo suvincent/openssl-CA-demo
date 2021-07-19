@@ -6,7 +6,6 @@ import ReactLogo from './logo.svg';
 import { useState} from 'react';
 
   
-  
 
 function About(props) {
     const [PrivateKey,setSK] = useState("");
@@ -16,6 +15,7 @@ function About(props) {
     const [DNS,setDNS] = useState("");
     const [Cert,setCert] = useState("");
     const [Days,setDays] = useState(365);
+    const [Cname,setCname] = useState("");
 
 
     async function gensK(){
@@ -54,11 +54,24 @@ function About(props) {
                 console.log(result)
                 setCSR(result)
         })
+        setCname(makeid(10))
     }
 
     async function genCert(){
         if(!Days  || !DNS || !CN){
             alert("please enter days and DNS and CN")
+            return
+        }
+        console.log("QQ")
+        if(!Cname){
+            setCname(makeid(10))
+            alert("please reset a cname record to check DNS ownership")
+            return 
+        }
+        let result = await checkDNS();
+        console.log(result)
+        if(!result){
+            alert("verify DNS ownership fail, please checkagain")
             return
         }
         const requestOptions = {
@@ -73,6 +86,30 @@ function About(props) {
                 console.log(result)
                 setCert(result)
         })
+    }
+
+    function makeid(length) {
+        var result           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+          result += characters.charAt(Math.floor(Math.random() * 
+     charactersLength));
+       }
+       return result;
+    }
+
+    async function checkDNS(){
+        console.log("start checking")
+        var result = await fetch(`http://localhost:4000/checkDNS?cname=${Cname}&dnsname=${DNS}`);
+        var content = await result.json()
+        // console.log(content)
+        if(content.length > 0 && content[0].domain == "qqtlstest.tk"){
+            return true
+        }
+        else{
+            return false
+        }
     }
 
     return  <>
@@ -149,7 +186,20 @@ function About(props) {
                 </Row>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                {/* <Form.Label>Root CA certificate</Form.Label> */}
+                {(Cname)?
+                <>
+                <Form.Label>please add {Cname} and destination qqtlstest.tk as a CNAME record to your DNS server!</Form.Label>
+                <Row>
+                    <Col>
+                    
+                    <Button variant="secondary" onClick={async ()=>{await navigator.clipboard.writeText(Cname)}}>Copy CNAME</Button>
+                    &nbsp;
+                    <Button variant="secondary" onClick={async ()=>{await navigator.clipboard.writeText(DNS)}}>Copy DNS</Button>{' '}
+                    
+                    </Col>
+                </Row>
+                </>:<></>}
+                <br />
                 <Form.Control as="textarea" rows={18} value={CSR} readOnly />
             </Form.Group>
             </Form>

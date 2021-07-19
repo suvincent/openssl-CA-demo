@@ -108,6 +108,19 @@ app.post('/genCert',async(req,res)=>{
     }
 });
 
+app.get('/checkDNS', async(req, res) => {
+    //http://localhost:4000/viewCrt?path=opensslqqtlstest.tk.crt
+    console.log(req.query.cname,req.query.dnsname)
+    let result = await func.checkDNS(req.query.cname,req.query.dnsname);
+    if(result)
+    {
+        res.send(result)
+    }
+    else{
+        res.send('fail!')
+    }
+  })
+
 app.get('/',(req,res) =>{
     res.send('QAQ');
 })
